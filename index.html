@@ -57,75 +57,91 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 py-6">
-        <div class="flex flex-col md:flex-row gap-6 mb-8 relative">
-            <div class="flex-1 flex flex-col">
-                <div class="flex justify-between items-center mb-2">
-                    <label class="font-bold text-red-600 dark:text-red-400 text-sm">変更前 (Original)</label>
-                    <label class="cursor-pointer text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded border border-blue-200 dark:border-blue-800 font-bold hover:bg-blue-100 transition">
-                        + ファイル読込
-                        <input type="file" class="hidden" accept=".txt,.csv,.md,.docx,.pdf" onchange="handleFileInput(event, 'original')">
-                    </label>
-                </div>
-                <textarea id="original" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較元のテキストを貼り付け（コード・文章・ファイル可）"></textarea>
-                <div id="count-original" class="text-right text-[11px] text-gray-500 mt-1 font-mono leading-tight">0 文字</div>
-            </div>
-
-            <div class="flex justify-center items-center">
-                <button onclick="swapText()" title="左右のテキストを入れ替える" class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full p-2.5 hover:bg-gray-100 dark:hover:bg-gray-600 shadow-sm transition transform active:scale-95">
-                    <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
-                </button>
-            </div>
-
-            <div class="flex-1 flex flex-col">
-                <div class="flex justify-between items-center mb-2">
-                    <label class="font-bold text-green-600 dark:text-green-400 text-sm">変更後 (Modified)</label>
-                    <label class="cursor-pointer text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded border border-blue-200 dark:border-blue-800 font-bold hover:bg-blue-100 transition">
-                        + ファイル読込
-                        <input type="file" class="hidden" accept=".txt,.csv,.md,.docx,.pdf" onchange="handleFileInput(event, 'modified')">
-                    </label>
-                </div>
-                <textarea id="modified" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較先のテキストを貼り付け（コード・文章・ファイル可）"></textarea>
-                <div id="count-modified" class="text-right text-[11px] text-gray-500 mt-1 font-mono leading-tight">0 文字</div>
-            </div>
-        </div>
-
-        <div class="flex justify-center space-x-4 mb-10">
-            <button onclick="clearText()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">クリア</button>
-            <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:translate-y-0">差分を比較する</button>
-        </div>
-
-        <!-- ✅ 広告枠１（上部）-->
-        <div class="mb-10 text-center min-h-[120px] flex justify-center items-center">
-            <!-- admax -->
-            <div id="admax-top">
-                <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
-                <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
-                <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
-            </div>
-            <!--/admax -->
-        </div>
-
-        <div id="result-container" class="hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden transition-all">
-            <div class="px-6 py-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex flex-wrap justify-between items-center gap-4">
-                <h2 class="font-bold flex items-center">比較結果 <span id="auto-sync-status" class="ml-3 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal hidden"></span></h2>
-                <div class="flex items-center space-x-4">
-                    <div id="badge-summary" class="text-xs font-bold flex space-x-3">
-                        <span id="badge-removed" class="text-red-500 border border-red-200 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded"></span>
-                        <span id="badge-added" class="text-green-600 border border-green-200 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded"></span>
+    <div class="max-w-7xl mx-auto px-4 py-6">
+        <div class="lg:flex lg:gap-8">
+            <!-- ===== メインコンテンツ ===== -->
+            <main class="flex-1">
+                <div class="flex flex-col md:flex-row gap-6 mb-8 relative">
+                    <div class="flex-1 flex flex-col">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="font-bold text-red-600 dark:text-red-400 text-sm">変更前 (Original)</label>
+                            <label class="cursor-pointer text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded border border-blue-200 dark:border-blue-800 font-bold hover:bg-blue-100 transition">
+                                + ファイル読込
+                                <input type="file" class="hidden" accept=".txt,.csv,.md,.docx,.pdf" onchange="handleFileInput(event, 'original')">
+                            </label>
+                        </div>
+                        <textarea id="original" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較元のテキストを貼り付け（コード・文章・ファイル可）"></textarea>
+                        <div id="count-original" class="text-right text-[11px] text-gray-500 mt-1 font-mono leading-tight">0 文字</div>
                     </div>
-                    <div id="diff-nav-controls" class="flex items-center space-x-1 border-l dark:border-gray-600 pl-4">
-                        <button onclick="jumpDiff(-1)" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">▲</button>
-                        <span id="diff-nav-text" class="text-[10px] font-mono min-w-[40px] text-center text-gray-500"></span>
-                        <button onclick="jumpDiff(1)" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">▼</button>
+
+                    <div class="flex justify-center items-center">
+                        <button onclick="swapText()" title="左右のテキストを入れ替える" class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-full p-2.5 hover:bg-gray-100 dark:hover:bg-gray-600 shadow-sm transition transform active:scale-95">
+                            <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path></svg>
+                        </button>
+                    </div>
+
+                    <div class="flex-1 flex flex-col">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="font-bold text-green-600 dark:text-green-400 text-sm">変更後 (Modified)</label>
+                            <label class="cursor-pointer text-[11px] bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded border border-blue-200 dark:border-blue-800 font-bold hover:bg-blue-100 transition">
+                                + ファイル読込
+                                <input type="file" class="hidden" accept=".txt,.csv,.md,.docx,.pdf" onchange="handleFileInput(event, 'modified')">
+                            </label>
+                        </div>
+                        <textarea id="modified" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較先のテキストを貼り付け（コード・文章・ファイル可）"></textarea>
+                        <div id="count-modified" class="text-right text-[11px] text-gray-500 mt-1 font-mono leading-tight">0 文字</div>
                     </div>
                 </div>
-            </div>
-            <div id="result-unified" class="p-6 whitespace-pre-wrap font-mono text-[14px] leading-relaxed overflow-auto max-h-[600px] bg-white dark:bg-gray-900"></div>
+
+                <div class="flex justify-center space-x-4 mb-10">
+                    <button onclick="clearText()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">クリア</button>
+                    <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:translate-y-0">差分を比較する</button>
+                </div>
+                
+                <!-- ✅ 広告枠 (モバイル用) -->
+                <div class="lg:hidden mb-10 text-center min-h-[120px] flex justify-center items-center">
+                    <!-- admax -->
+                    <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
+                    <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
+                    <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
+                    <!--/admax -->
+                </div>
+
+                <div id="result-container" class="hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden transition-all">
+                    <div class="px-6 py-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex flex-wrap justify-between items-center gap-4">
+                        <h2 class="font-bold flex items-center">比較結果 <span id="auto-sync-status" class="ml-3 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal hidden"></span></h2>
+                        <div class="flex items-center space-x-4">
+                            <div id="badge-summary" class="text-xs font-bold flex space-x-3">
+                                <span id="badge-removed" class="text-red-500 border border-red-200 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded"></span>
+                                <span id="badge-added" class="text-green-600 border border-green-200 bg-green-50 dark:bg-green-900/20 px-2 py-0.5 rounded"></span>
+                            </div>
+                            <div id="diff-nav-controls" class="flex items-center space-x-1 border-l dark:border-gray-600 pl-4">
+                                <button onclick="jumpDiff(-1)" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">▲</button>
+                                <span id="diff-nav-text" class="text-[10px] font-mono min-w-[40px] text-center text-gray-500"></span>
+                                <button onclick="jumpDiff(1)" class="p-1.5 hover:bg-gray-200 dark:hover:bg-gray-700 rounded transition">▼</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="result-unified" class="p-6 whitespace-pre-wrap font-mono text-[14px] leading-relaxed overflow-auto max-h-[600px] bg-white dark:bg-gray-900"></div>
+                </div>
+            </main>
+
+            <!-- ===== サイドバー (PC用広告) ===== -->
+            <aside class="hidden lg:block lg:w-80 flex-shrink-0">
+                <div class="sticky top-24 space-y-6">
+                    <div class="text-center">
+                        <!-- admax -->
+                        <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
+                        <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
+                        <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
+                        <!--/admax -->
+                    </div>
+                </div>
+            </aside>
         </div>
-    </main>
+    </div>
     
-    <!-- ✅ 広告枠２（下部）-->
+    <!-- ✅ 広告枠２（下部） - フッターの直前に移動 -->
     <div class="max-w-7xl mx-auto px-4 py-6 text-center min-h-[120px] flex justify-center items-center">
         <!-- admax -->
         <div id="admax-bottom">
@@ -161,6 +177,7 @@
     </footer>
 
     <script>
+        // (JavaScript部分は変更ありません)
         // DOM要素のキャッシュ
         const originalEl = document.getElementById('original');
         const modifiedEl = document.getElementById('modified');
