@@ -23,9 +23,6 @@
         .diff-removed { background-color: #fee2e2; color: #991b1b; text-decoration: line-through; border-radius: 2px; padding: 0 2px; opacity: 0.8; }
         .dark .diff-added { background-color: #065f46; color: #a7f3d0; }
         .dark .diff-removed { background-color: #991b1b; color: #fecaca; }
-        /* ✅ 広告枠用のスタイル */
-        .ad-placeholder { background: #f8fafc; border: 2px dashed #e2e8f0; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 0.9rem; text-align: center; padding: 10px; }
-        .dark .ad-placeholder { background: #1e293b; border-color: #334155; color: #64748b; }
         label:has(input:disabled) { cursor: not-allowed; opacity: 0.5; }
         @media (min-width: 768px) { textarea { resize: vertical; } }
     </style>
@@ -98,9 +95,11 @@
             <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:translate-y-0">差分を比較する</button>
         </div>
 
-        <!-- ✅ 広告枠の追加 -->
-        <div class="mb-10 ad-placeholder h-24 rounded-lg">
-            広告エリア
+        <!-- ✅ 広告枠 (上部) -->
+        <div class="mb-10 text-center">
+            <!-- admax -->
+            <script src="https://adm.shinobi.jp/s/94ad7c62ffd6d5aead85cad7709ba4c4"></script>
+            <!-- admax -->
         </div>
 
         <div id="result-container" class="hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden transition-all">
@@ -122,6 +121,13 @@
         </div>
     </main>
     
+    <!-- ✅ 広告枠 (下部) -->
+    <div class="max-w-7xl mx-auto px-4 py-6 text-center">
+        <!-- admax -->
+        <script src="https://adm.shinobi.jp/s/4e134db76dfe83b32cc56c35b40b"></script>
+        <!-- admax -->
+    </div>
+
     <footer class="mt-16 bg-white dark:bg-gray-800 border-t dark:border-gray-700 py-12">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
             <div class="md:col-span-1">
@@ -148,7 +154,6 @@
                     フィードバック
                 </h3>
                 <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-                    <!-- ✅ フィードバック文言の修正 -->
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">開発者: AppLab_K<br>バグ報告や機能要望は、以下のボタンで定型文をコピーし、開かれたDMに貼り付けてご連絡ください。</p>
                     <button onclick="openDmWithCopy(this)" class="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-500 text-white text-sm font-bold rounded-lg hover:bg-blue-600 transition-all shadow-md active:scale-[0.98]">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
