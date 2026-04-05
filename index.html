@@ -102,7 +102,7 @@
                 <div class="lg:hidden mb-10 text-center min-h-[120px] flex justify-center items-center">
                     <!-- admax -->
                     <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
-                    <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
+                    <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
                     <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
                     <!--/admax -->
                 </div>
@@ -132,7 +132,7 @@
                     <div class="text-center">
                         <!-- admax -->
                         <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
-                        <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
+                        <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
                         <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
                         <!--/admax -->
                     </div>
@@ -146,7 +146,7 @@
         <!-- admax -->
         <div id="admax-bottom">
             <div class="admax-ads" data-admax-id="4e134db76dfe83bcd8b532c56c35b40b" style="display:inline-block;"></div>
-            <script type="text/javascript">(admaxads = window.admaxads || []).push({admax_id: "4e134db76dfe83bcd8b532c56c35b40b",type: "banner"});</script>
+            <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "4e134db76dfe83bcd8b532c56c35b40b",type: "banner"});</script>
             <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
         </div>
         <!--/admax -->
@@ -177,7 +177,6 @@
     </footer>
 
     <script>
-        // (JavaScript部分は変更ありません)
         // DOM要素のキャッシュ
         const originalEl = document.getElementById('original');
         const modifiedEl = document.getElementById('modified');
@@ -193,9 +192,11 @@
         const diffNavControlsEl = document.getElementById('diff-nav-controls');
         const diffNavTextEl = document.getElementById('diff-nav-text');
         
-        const AUTO_COMPARE_THRESHOLD = 20000;
-        const MANUAL_COMPARE_THRESHOLD = 50000;
-        let diffElements = [];
+        // 変更箇所：自動比較の上限を50,000文字、比較実行の絶対上限を100,000文字に修正
+        const AUTO_COMPARE_THRESHOLD = 50000;
+        const MANUAL_COMPARE_THRESHOLD = 100000;
+        
+        let diffElements =[];
         let currentDiffIndex = -1;
         let debounceTimer = null;
         
@@ -249,13 +250,12 @@
             updateCounts();
             resultContainerEl.classList.add("hidden");
             autoSyncStatusEl.classList.add("hidden");
-            diffElements = [];
+            diffElements =[];
             currentDiffIndex = -1;
             diffNavTextEl.innerText = "0 / 0";
         }
 
-        function swapText() {
-            [originalEl.value, modifiedEl.value] = [modifiedEl.value, originalEl.value];
+        function swapText() {[originalEl.value, modifiedEl.value] = [modifiedEl.value, originalEl.value];
             updateCounts();
             compareText(false);
         }
@@ -299,7 +299,7 @@
                 if (unit === "chars") count = part.value.length;
                 else if (unit === "words") count = (includeSpace ? part.value.match(/\S+|\s+/g) : part.value.match(/\S+/g))?.length || 0;
                 else if (unit === "lines") {
-                    count = (part.value.match(/\n/g) || []).length;
+                    count = (part.value.match(/\n/g) ||[]).length;
                     if (count === 0 && part.value.length > 0) count = 1;
                 }
                 const span = document.createElement('span');
