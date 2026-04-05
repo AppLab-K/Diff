@@ -96,9 +96,17 @@
         </div>
 
         <!-- ✅ 広告枠１（上部）-->
-        <div class="mb-10 text-center">
+        <div class="mb-10 text-center min-h-[120px] flex justify-center items-center">
             <!-- admax -->
-            <script src="https://adm.shinobi.jp/s/94ad7c62ffd6d5aead85cad7709ba4c4"></script>
+            <div id="admax-top"></div>
+            <script>
+            (function(){
+                const s = document.createElement("script");
+                s.src = "https://adm.shinobi.jp/s/94ad7c62ffd6d5aead85cad7709ba4c4";
+                s.async = true;
+                document.getElementById("admax-top").appendChild(s);
+            })();
+            </script>
             <!--/admax -->
         </div>
 
@@ -122,9 +130,17 @@
     </main>
     
     <!-- ✅ 広告枠２（下部）-->
-    <div class="max-w-7xl mx-auto px-4 py-6 text-center">
+    <div class="max-w-7xl mx-auto px-4 py-6 text-center min-h-[120px] flex justify-center items-center">
         <!-- admax -->
-        <script src="https://adm.shinobi.jp/s/4e134db76dfe83b32cc56c35b40b"></script>
+        <div id="admax-bottom"></div>
+        <script>
+        (function(){
+            const s = document.createElement("script");
+            s.src = "https://adm.shinobi.jp/s/4e134db76dfe83b32cc56c35b40b";
+            s.async = true;
+            document.getElementById("admax-bottom").appendChild(s);
+        })();
+        </script>
         <!--/admax -->
     </div>
 
