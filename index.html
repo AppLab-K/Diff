@@ -6,9 +6,22 @@
     <title>テキスト差分比較ツール｜Diffチェック（文字・行・単語）無料オンライン</title>
     <meta name="description" content="テキスト差分を比較できる無料オンラインDiffツール。2つのテキストの差異を単語・行・文字単位でハイライト表示し、変更箇所をわかりやすく可視化します。ファイル読み込みにも対応。">
     
+    <!-- 外部ライブラリの読み込み -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { darkMode: 'class', theme: { extend: { colors: { addBg: '#dcfce7', addText: '#166534', remBg: '#fee2e2', remText: '#991b1b', darkAddBg: '#065f46', darkAddText: '#a7f3d0', darkRemBg: '#991b1b', darkRemText: '#fecaca' } } } }
+        tailwind.config = { 
+            darkMode: 'class', 
+            theme: { 
+                extend: { 
+                    colors: { 
+                        addBg: '#dcfce7', addText: '#166534', 
+                        remBg: '#fee2e2', remText: '#991b1b', 
+                        darkAddBg: '#065f46', darkAddText: '#a7f3d0', 
+                        darkRemBg: '#991b1b', darkRemText: '#fecaca' 
+                    } 
+                } 
+            } 
+        }
     </script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsdiff/5.2.0/diff.min.js"></script>
@@ -23,6 +36,7 @@
         .diff-removed { background-color: #fee2e2; color: #991b1b; text-decoration: line-through; border-radius: 2px; padding: 0 2px; opacity: 0.8; }
         .dark .diff-added { background-color: #065f46; color: #a7f3d0; }
         .dark .diff-removed { background-color: #991b1b; color: #fecaca; }
+        .diff-focus { outline: 3px solid #3b82f6; outline-offset: 2px; position: relative; z-index: 10; }
         label:has(input:disabled) { cursor: not-allowed; opacity: 0.5; }
         @media (min-width: 768px) { textarea { resize: vertical; } }
     </style>
@@ -70,8 +84,8 @@
                                 <input type="file" class="hidden" accept=".txt,.csv,.md,.docx,.pdf" onchange="handleFileInput(event, 'original')">
                             </label>
                         </div>
-                        <textarea id="original" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較元のテキストを貼り付け（コード・文章・ファイル可）"></textarea>
-                        <div id="count-original" class="text-right text-[11px] text-gray-500 mt-1 font-mono leading-tight">0 文字</div>
+                        <textarea id="original" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較元のテキストを貼り付け"></textarea>
+                        <div id="count-original" class="text-right text-[11px] text-gray-500 mt-1 font-mono">0 文字</div>
                     </div>
 
                     <div class="flex justify-center items-center">
@@ -88,23 +102,21 @@
                                 <input type="file" class="hidden" accept=".txt,.csv,.md,.docx,.pdf" onchange="handleFileInput(event, 'modified')">
                             </label>
                         </div>
-                        <textarea id="modified" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較先のテキストを貼り付け（コード・文章・ファイル可）"></textarea>
-                        <div id="count-modified" class="text-right text-[11px] text-gray-500 mt-1 font-mono leading-tight">0 文字</div>
+                        <textarea id="modified" rows="12" class="w-full p-4 border border-gray-300 rounded-lg dark:bg-gray-800 dark:border-gray-600 font-mono text-sm shadow-sm focus:ring-2 focus:ring-blue-500 outline-none" placeholder="比較先のテキストを貼り付け"></textarea>
+                        <div id="count-modified" class="text-right text-[11px] text-gray-500 mt-1 font-mono">0 文字</div>
                     </div>
                 </div>
 
                 <div class="flex justify-center space-x-4 mb-10">
                     <button onclick="clearText()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">クリア</button>
-                    <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:translate-y-0">差分を比較する</button>
+                    <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition">差分を比較する</button>
                 </div>
                 
-                <!-- ✅ 広告枠 (モバイル用) -->
+                <!-- 広告枠 (モバイル用) -->
                 <div class="lg:hidden mb-10 text-center min-h-[120px] flex justify-center items-center">
-                    <!-- admax -->
                     <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
                     <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
                     <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
-                    <!--/admax -->
                 </div>
 
                 <div id="result-container" class="hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden transition-all">
@@ -130,49 +142,45 @@
             <aside class="hidden lg:block lg:w-80 flex-shrink-0">
                 <div class="sticky top-24 space-y-6">
                     <div class="text-center">
-                        <!-- admax -->
                         <div class="admax-ads" data-admax-id="94ad7c62ffd8d5aead85cad7709ba4c4" style="display:inline-block;"></div>
                         <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "94ad7c62ffd8d5aead85cad7709ba4c4",type: "banner"});</script>
                         <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
-                        <!--/admax -->
                     </div>
                 </div>
             </aside>
         </div>
     </div>
     
-    <!-- ✅ 広告枠２（下部） - フッターの直前に移動 -->
+    <!-- 広告枠（下部） -->
     <div class="max-w-7xl mx-auto px-4 py-6 text-center min-h-[120px] flex justify-center items-center">
-        <!-- admax -->
-        <div id="admax-bottom">
-            <div class="admax-ads" data-admax-id="4e134db76dfe83bcd8b532c56c35b40b" style="display:inline-block;"></div>
-            <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "4e134db76dfe83bcd8b532c56c35b40b",type: "banner"});</script>
-            <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
-        </div>
-        <!--/admax -->
+        <div class="admax-ads" data-admax-id="4e134db76dfe83bcd8b532c56c35b40b" style="display:inline-block;"></div>
+        <script type="text/javascript">(admaxads = window.admaxads ||[]).push({admax_id: "4e134db76dfe83bcd8b532c56c35b40b",type: "banner"});</script>
+        <script type="text/javascript" charset="utf-8" src="https://adm.shinobi.jp/st/t.js" async></script>
     </div>
 
     <footer class="mt-16 bg-white dark:bg-gray-800 border-t dark:border-gray-700 py-12">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12">
             <div class="md:col-span-1">
-                <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100"><svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>セキュリティ・プライバシー</h3>
+                <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100">セキュリティ・プライバシー</h3>
                 <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">入力されたテキストやファイルはサーバーへ送信されません。全ての比較処理はあなたのブラウザ内で完結するため、機密情報も安全にご利用いただけます。</p>
             </div>
             <div class="md:col-span-1">
-                 <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100"><svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>ツールの仕様について</h3>
-                 <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">「単語単位」の比較は、スペース区切りの言語（英語など）に最適化されています。日本語のように区切りのない文章では、意図しない単位で比較される場合があります。</p>
+                 <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100">ツールの仕様</h3>
+                 <p class="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">「単語単位」は英語等のスペース区切り言語に最適化されています。日本語の文章比較には「文字単位」を推奨します。</p>
             </div>
             <div class="md:col-span-1">
-                <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100"><svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>フィードバック</h3>
+                <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100">フィードバック</h3>
                 <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                     <p class="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">開発者: AppLab_K<br>バグ報告や機能要望は、以下のボタンで定型文をコピーし、開かれたDMに貼り付けてご連絡ください。</p>
-                    <button onclick="openDmWithCopy(this)" class="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-500 text-white text-sm font-bold rounded-lg hover:bg-blue-600 transition-all shadow-md active:scale-[0.98]"><svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"></path></svg>定型文をコピーしてDMを開く</button>
+                    <button onclick="openDmWithCopy(this)" class="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-500 text-white text-sm font-bold rounded-lg hover:bg-blue-600 transition-all shadow-md active:scale-[0.98]">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"></path></svg>
+                        定型文をコピーしてDMを開く
+                    </button>
                 </div>
             </div>
         </div>
         <div class="text-center mt-12 text-[10px] text-gray-400">
             &copy; <script>document.write(new Date().getFullYear());</script> AppLab_K.
-             <p class="text-[11px] text-gray-400 mt-2">※当サイトの利用により生じた不利益について、開発者は一切の責任を負いかねます。</p>
         </div>
     </footer>
 
@@ -192,7 +200,6 @@
         const diffNavControlsEl = document.getElementById('diff-nav-controls');
         const diffNavTextEl = document.getElementById('diff-nav-text');
         
-        // 変更箇所：自動比較の上限を50,000文字、比較実行の絶対上限を100,000文字に修正
         const AUTO_COMPARE_THRESHOLD = 50000;
         const MANUAL_COMPARE_THRESHOLD = 100000;
         
@@ -200,6 +207,7 @@
         let currentDiffIndex = -1;
         let debounceTimer = null;
         
+        // PDF.js workerの設定
         try { if(window.pdfjsLib) window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js'; } 
         catch(e) { console.error(e); }
 
@@ -214,8 +222,8 @@
         function updateCounts() {
             const valOrg = originalEl.value;
             const valMod = modifiedEl.value;
-            countOriginalEl.innerHTML = `${valOrg.length.toLocaleString()} 文字<br>空白除外: ${valOrg.replace(/\s/g, "").length.toLocaleString()}`;
-            countModifiedEl.innerHTML = `${valMod.length.toLocaleString()} 文字<br>空白除外: ${valMod.replace(/\s/g, "").length.toLocaleString()}`;
+            countOriginalEl.innerText = `${valOrg.length.toLocaleString()} 文字`;
+            countModifiedEl.innerText = `${valMod.length.toLocaleString()} 文字`;
             return valOrg.length + valMod.length;
         }
 
@@ -227,10 +235,10 @@
             const total = originalEl.value.length + modifiedEl.value.length;
             if (total > AUTO_COMPARE_THRESHOLD) {
                 autoSyncStatusEl.innerHTML = "● 自動比較OFF (文字数過多)";
-                autoSyncStatusEl.className = "ml-3 text-[10px] bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 px-2 py-0.5 rounded-full font-normal";
+                autoSyncStatusEl.className = "ml-3 text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-normal";
             } else {
                 autoSyncStatusEl.innerHTML = "● 自動比較ON";
-                autoSyncStatusEl.className = "ml-3 text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-normal";
+                autoSyncStatusEl.className = "ml-3 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal";
             }
             autoSyncStatusEl.classList.remove("hidden");
         }
@@ -252,29 +260,25 @@
             autoSyncStatusEl.classList.add("hidden");
             diffElements =[];
             currentDiffIndex = -1;
-            diffNavTextEl.innerText = "0 / 0";
         }
 
-        function swapText() {[originalEl.value, modifiedEl.value] = [modifiedEl.value, originalEl.value];
+        function swapText() {
+            [originalEl.value, modifiedEl.value] = [modifiedEl.value, originalEl.value];
             updateCounts();
             compareText(false);
         }
 
         function compareText(isAuto = false) {
-            diffElements.forEach(el => el.classList.remove("ring-4", "ring-blue-400", "ring-offset-2"));
-            
             let original = originalEl.value.replace(/\r\n|\r/g, "\n");
             let modified = modifiedEl.value.replace(/\r\n|\r/g, "\n");
             
             if (!original.trim() && !modified.trim()) {
                 resultContainerEl.classList.add("hidden");
-                updateAutoCompareStatus();
                 return;
             }
 
             if (original.length + modified.length > MANUAL_COMPARE_THRESHOLD) {
-                if (isAuto) return;
-                alert(`テキストが大きすぎます（合計${MANUAL_COMPARE_THRESHOLD.toLocaleString()}文字まで）`);
+                if (!isAuto) alert(`合計${MANUAL_COMPARE_THRESHOLD.toLocaleString()}文字以内にして下さい`);
                 return;
             }
 
@@ -282,12 +286,7 @@
             const includeSpace = diffSpaceEl.checked;
             let diffs;
 
-            if (unit === "chars" && !includeSpace) {
-                original = original.replace(/\s/g, "");
-                modified = modified.replace(/\s/g, "");
-            }
-
-            if (unit === "lines") diffs = Diff.diffLines(original, modified, { newlineIsToken: true });
+            if (unit === "lines") diffs = Diff.diffLines(original, modified);
             else if (unit === "words") diffs = includeSpace ? Diff.diffWordsWithSpace(original, modified) : Diff.diffWords(original, modified);
             else diffs = Diff.diffChars(original, modified);
 
@@ -295,33 +294,29 @@
             let remCount = 0, addCount = 0;
 
             diffs.forEach((part) => {
-                let count = 0;
-                if (unit === "chars") count = part.value.length;
-                else if (unit === "words") count = (includeSpace ? part.value.match(/\S+|\s+/g) : part.value.match(/\S+/g))?.length || 0;
-                else if (unit === "lines") {
-                    count = (part.value.match(/\n/g) ||[]).length;
-                    if (count === 0 && part.value.length > 0) count = 1;
-                }
                 const span = document.createElement('span');
-                if (part.added) { span.className = 'diff-added diff-target'; addCount += count; } 
-                else if (part.removed) { span.className = 'diff-removed diff-target'; remCount += count; }
+                if (part.added) { 
+                    span.className = 'diff-added diff-target'; 
+                    addCount += (unit === "lines" ? (part.value.match(/\n/g) || [1]).length : part.value.length); 
+                } 
+                else if (part.removed) { 
+                    span.className = 'diff-removed diff-target'; 
+                    remCount += (unit === "lines" ? (part.value.match(/\n/g) || [1]).length : part.value.length); 
+                }
                 span.innerHTML = escapeHTML(part.value);
                 fragment.appendChild(span);
             });
             
             resultUnifiedEl.innerHTML = '';
             resultUnifiedEl.appendChild(fragment);
-            const unitLabel = { chars: "文字", words: "単語", lines: "行" }[unit];
-            badgeRemovedEl.innerText = `削除: -${remCount.toLocaleString()} ${unitLabel}`;
-            badgeAddedEl.innerText = `追加: +${addCount.toLocaleString()} ${unitLabel}`;
+            badgeRemovedEl.innerText = `削除: -${remCount}`;
+            badgeAddedEl.innerText = `追加: +${addCount}`;
             
             diffElements = Array.from(resultUnifiedEl.querySelectorAll(".diff-target"));
-            diffNavControlsEl.classList.toggle('hidden', diffElements.length > 3000);
             
             if (diffElements.length > 0) {
                 currentDiffIndex = 0;
                 diffNavTextEl.innerText = `1 / ${diffElements.length}`;
-                diffElements[0].classList.add("ring-4", "ring-blue-400", "ring-offset-2");
             } else {
                 currentDiffIndex = -1;
                 diffNavTextEl.innerText = `0 / 0`;
@@ -329,45 +324,39 @@
             
             resultContainerEl.classList.remove("hidden");
             updateAutoCompareStatus();
-            
-            if (!isAuto && diffElements.length > 0) diffElements[0].scrollIntoView({ behavior: "smooth", block: "center" });
-            else if (!isAuto) resultContainerEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            if (!isAuto) resultContainerEl.scrollIntoView({ behavior: "smooth" });
         }
 
         function jumpDiff(dir) {
-            if (diffElements.length === 0 || diffElements.length > 3000) return;
-            if (currentDiffIndex >= 0) diffElements[currentDiffIndex].classList.remove("ring-4", "ring-blue-400", "ring-offset-2");
+            if (diffElements.length === 0) return;
+            if (currentDiffIndex >= 0) diffElements[currentDiffIndex].classList.remove("diff-focus");
             currentDiffIndex = (currentDiffIndex + dir + diffElements.length) % diffElements.length;
             const el = diffElements[currentDiffIndex];
-            el.classList.add("ring-4", "ring-blue-400", "ring-offset-2");
+            el.classList.add("diff-focus");
             el.scrollIntoView({ behavior: "smooth", block: "center" });
             diffNavTextEl.innerText = `${currentDiffIndex + 1} / ${diffElements.length}`;
         }
 
         async function processFile(file, targetId) {
             const targetEl = (targetId === 'original') ? originalEl : modifiedEl;
-            const originalVal = targetEl.value;
-            targetEl.value = "読み込み中...";
             try {
-                if ((file.name || "").toLowerCase().endsWith(".pdf") && !window.pdfjsLib) {
-                    throw new Error("PDF読み込みライブラリがロードされていません。");
-                }
-                targetEl.value = await getFileText(file);
+                targetEl.value = "読み込み中...";
+                const text = await getFileText(file);
+                targetEl.value = text;
                 updateCounts();
                 compareText(true);
             } catch (e) {
-                alert("ファイル読み込みエラー: " + e.message);
-                targetEl.value = originalVal;
+                alert("エラー: " + e.message);
+                targetEl.value = "";
             }
         }
         
         async function getFileText(file) {
-            const name = (file.name || "").toLowerCase();
+            const name = file.name.toLowerCase();
             if (name.endsWith(".txt") || name.endsWith(".csv") || name.endsWith(".md")) return file.text();
             if (name.endsWith(".docx")) return (await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() })).value;
             if (name.endsWith(".pdf")) {
                 const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
-                if (pdf.numPages > 100) throw new Error(`PDFは100ページまで対応しています (現在: ${pdf.numPages}ページ)`);
                 let text = "";
                 for (let i = 1; i <= pdf.numPages; i++) {
                     const page = await pdf.getPage(i);
@@ -376,7 +365,7 @@
                 }
                 return text;
             }
-            throw new Error("対応していないファイル形式です (.txt, .csv, .md, .docx, .pdf)");
+            throw new Error("非対応の形式です");
         }
 
         function handleFileInput(e, targetId) {
@@ -384,37 +373,34 @@
             e.target.value = ""; 
         }
 
+        // === DM送信機能 (ご希望の修正を適用) ===
         function openDmWithCopy(btn) {
             const textToCopy = "【テキスト差分比較ツールへのメッセージ】\n";
-            const dmUrl = "https://twitter.com/messages/compose?recipient_id=2032694737069838336";
+            const dmUrl = "https://x.com/messages/compose?screen_name=AppLab_K";
+            
             const showCopied = () => {
                 const originalHtml = btn.innerHTML;
                 btn.innerHTML = `<span class="flex items-center font-bold">✓ コピーしました</span>`;
                 setTimeout(() => { btn.innerHTML = originalHtml; }, 3000);
                 window.open(dmUrl, "_blank", "noopener,noreferrer");
             };
-            navigator.clipboard?.writeText(textToCopy).then(showCopied, () => {
-                alert("クリップボードのコピーに失敗しました。");
-                window.open(dmUrl, "_blank", "noopener,noreferrer");
+            
+            navigator.clipboard.writeText(textToCopy).then(showCopied, () => {
+                window.open(dmUrl, "_blank");
             });
         }
 
-        function updateWhitespaceCheckboxState() {
-            const isCharsUnit = diffUnitEl.value === 'chars';
-            diffSpaceEl.disabled = !isCharsUnit;
-            if(!isCharsUnit) diffSpaceEl.checked = false;
-        }
         function handleDiffUnitChange() {
-            updateWhitespaceCheckboxState();
+            diffSpaceEl.disabled = (diffUnitEl.value !== 'chars');
+            if(diffUnitEl.value !== 'chars') diffSpaceEl.checked = false;
             compareText(true);
         }
         
+        // 初期化
         document.addEventListener('DOMContentLoaded', () => {
             originalEl.addEventListener("input", autoCompare);
             modifiedEl.addEventListener("input", autoCompare);
             updateCounts();
-            updateWhitespaceCheckboxState();
-            clearText();
         });
     </script>
 </body>
