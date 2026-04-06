@@ -6,7 +6,7 @@
     <title>テキスト差分比較ツール｜Diffチェック（文字・行・単語）無料オンライン</title>
     <meta name="description" content="テキスト差分を比較できる無料オンラインDiffツール。2つのテキストの差異を単語・行・文字単位でハイライト表示し、変更箇所をわかりやすく可視化します。ファイル読み込みにも対応。">
     
-    <!-- 外部ライブラリの読み込み -->
+    <!-- 外部ライブラリ -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { 
@@ -36,12 +36,12 @@
         .diff-removed { background-color: #fee2e2; color: #991b1b; text-decoration: line-through; border-radius: 2px; padding: 0 2px; opacity: 0.8; }
         .dark .diff-added { background-color: #065f46; color: #a7f3d0; }
         .dark .diff-removed { background-color: #991b1b; color: #fecaca; }
-        .diff-focus { outline: 3px solid #3b82f6; outline-offset: 2px; position: relative; z-index: 10; }
+        .diff-focus { outline: 3px solid #3b82f6; outline-offset: 2px; position: relative; z-index: 10; border-radius: 2px; }
         label:has(input:disabled) { cursor: not-allowed; opacity: 0.5; }
         @media (min-width: 768px) { textarea { resize: vertical; } }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen font-sans">
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen font-sans transition-colors duration-200">
     
     <script>
         if (localStorage.theme === 'dark' || (!('theme'in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -109,7 +109,7 @@
 
                 <div class="flex justify-center space-x-4 mb-10">
                     <button onclick="clearText()" class="px-6 py-2.5 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">クリア</button>
-                    <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition">差分を比較する</button>
+                    <button onclick="compareText(false)" class="px-12 py-2.5 bg-blue-600 text-white rounded-lg font-bold shadow-lg hover:bg-blue-700 transition transform hover:-translate-y-0.5 active:translate-y-0">差分を比較する</button>
                 </div>
                 
                 <!-- 広告枠 (モバイル用) -->
@@ -121,7 +121,7 @@
 
                 <div id="result-container" class="hidden bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md overflow-hidden transition-all">
                     <div class="px-6 py-4 border-b dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 flex flex-wrap justify-between items-center gap-4">
-                        <h2 class="font-bold flex items-center">比較結果 <span id="auto-sync-status" class="ml-3 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal hidden"></span></h2>
+                        <h2 class="font-bold flex items-center">比較結果 <span id="auto-sync-status" class="ml-3 text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-normal hidden"></span></h2>
                         <div class="flex items-center space-x-4">
                             <div id="badge-summary" class="text-xs font-bold flex space-x-3">
                                 <span id="badge-removed" class="text-red-500 border border-red-200 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded"></span>
@@ -171,7 +171,7 @@
             <div class="md:col-span-1">
                 <h3 class="font-bold mb-4 flex items-center text-gray-800 dark:text-gray-100">フィードバック</h3>
                 <div class="bg-gray-50 dark:bg-gray-900/50 p-4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">開発者: AppLab_K<br>バグ報告や機能要望は、以下のボタンで定型文をコピーし、開かれたDMに貼り付けてご連絡ください。</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-3 leading-relaxed">開発者: AppLab_K (@AppLab_K)<br>バグ報告や機能要望は、以下のボタンで定型文をコピーし、開かれたDMに貼り付けてご連絡ください。</p>
                     <button onclick="openDmWithCopy(this)" class="inline-flex items-center justify-center w-full px-4 py-2 bg-blue-500 text-white text-sm font-bold rounded-lg hover:bg-blue-600 transition-all shadow-md active:scale-[0.98]">
                         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"></path></svg>
                         定型文をコピーしてDMを開く
@@ -185,7 +185,7 @@
     </footer>
 
     <script>
-        // DOM要素のキャッシュ
+        // DOM要素キャッシュ
         const originalEl = document.getElementById('original');
         const modifiedEl = document.getElementById('modified');
         const countOriginalEl = document.getElementById('count-original');
@@ -207,7 +207,7 @@
         let currentDiffIndex = -1;
         let debounceTimer = null;
         
-        // PDF.js workerの設定
+        // PDF.js worker
         try { if(window.pdfjsLib) window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js'; } 
         catch(e) { console.error(e); }
 
@@ -235,10 +235,10 @@
             const total = originalEl.value.length + modifiedEl.value.length;
             if (total > AUTO_COMPARE_THRESHOLD) {
                 autoSyncStatusEl.innerHTML = "● 自動比較OFF (文字数過多)";
-                autoSyncStatusEl.className = "ml-3 text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-normal";
+                autoSyncStatusEl.className = "ml-3 text-[10px] bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400 px-2 py-0.5 rounded-full font-normal";
             } else {
                 autoSyncStatusEl.innerHTML = "● 自動比較ON";
-                autoSyncStatusEl.className = "ml-3 text-[10px] bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-normal";
+                autoSyncStatusEl.className = "ml-3 text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2 py-0.5 rounded-full font-normal";
             }
             autoSyncStatusEl.classList.remove("hidden");
         }
@@ -295,22 +295,23 @@
 
             diffs.forEach((part) => {
                 const span = document.createElement('span');
-                if (part.added) { 
-                    span.className = 'diff-added diff-target'; 
-                    addCount += (unit === "lines" ? (part.value.match(/\n/g) || [1]).length : part.value.length); 
-                } 
-                else if (part.removed) { 
-                    span.className = 'diff-removed diff-target'; 
-                    remCount += (unit === "lines" ? (part.value.match(/\n/g) || [1]).length : part.value.length); 
-                }
+                let count = 0;
+                if (unit === "lines") count = (part.value.match(/\n/g) || [1]).length;
+                else if (unit === "words") count = (part.value.match(/\S+/g) || []).length;
+                else count = part.value.length;
+
+                if (part.added) { span.className = 'diff-added diff-target'; addCount += count; } 
+                else if (part.removed) { span.className = 'diff-removed diff-target'; remCount += count; }
+                
                 span.innerHTML = escapeHTML(part.value);
                 fragment.appendChild(span);
             });
             
             resultUnifiedEl.innerHTML = '';
             resultUnifiedEl.appendChild(fragment);
-            badgeRemovedEl.innerText = `削除: -${remCount}`;
-            badgeAddedEl.innerText = `追加: +${addCount}`;
+            const unitLabel = { chars: "文字", words: "単語", lines: "行" }[unit];
+            badgeRemovedEl.innerText = `削除: -${remCount.toLocaleString()} ${unitLabel}`;
+            badgeAddedEl.innerText = `追加: +${addCount.toLocaleString()} ${unitLabel}`;
             
             diffElements = Array.from(resultUnifiedEl.querySelectorAll(".diff-target"));
             
@@ -324,7 +325,7 @@
             
             resultContainerEl.classList.remove("hidden");
             updateAutoCompareStatus();
-            if (!isAuto) resultContainerEl.scrollIntoView({ behavior: "smooth" });
+            if (!isAuto) resultContainerEl.scrollIntoView({ behavior: "smooth", block: "start" });
         }
 
         function jumpDiff(dir) {
@@ -341,7 +342,23 @@
             const targetEl = (targetId === 'original') ? originalEl : modifiedEl;
             try {
                 targetEl.value = "読み込み中...";
-                const text = await getFileText(file);
+                const name = file.name.toLowerCase();
+                let text = "";
+                if (name.endsWith(".txt") || name.endsWith(".csv") || name.endsWith(".md")) {
+                    text = await file.text();
+                } else if (name.endsWith(".docx")) {
+                    const result = await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() });
+                    text = result.value;
+                } else if (name.endsWith(".pdf")) {
+                    const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const content = await page.getTextContent();
+                        text += content.items.map(it => it.str).join(" ") + "\n";
+                    }
+                } else {
+                    throw new Error("非対応の形式です");
+                }
                 targetEl.value = text;
                 updateCounts();
                 compareText(true);
@@ -350,33 +367,16 @@
                 targetEl.value = "";
             }
         }
-        
-        async function getFileText(file) {
-            const name = file.name.toLowerCase();
-            if (name.endsWith(".txt") || name.endsWith(".csv") || name.endsWith(".md")) return file.text();
-            if (name.endsWith(".docx")) return (await mammoth.extractRawText({ arrayBuffer: await file.arrayBuffer() })).value;
-            if (name.endsWith(".pdf")) {
-                const pdf = await pdfjsLib.getDocument({ data: await file.arrayBuffer() }).promise;
-                let text = "";
-                for (let i = 1; i <= pdf.numPages; i++) {
-                    const page = await pdf.getPage(i);
-                    const content = await page.getTextContent();
-                    text += content.items.map(it => it.str).join(" ") + "\n";
-                }
-                return text;
-            }
-            throw new Error("非対応の形式です");
-        }
 
         function handleFileInput(e, targetId) {
             if (e.target.files[0]) processFile(e.target.files[0], targetId);
             e.target.value = ""; 
         }
 
-        // === DM送信機能 (ご希望の修正を適用) ===
+        // === DM送信機能 (ユーザーID指定形式) ===
         function openDmWithCopy(btn) {
             const textToCopy = "【テキスト差分比較ツールへのメッセージ】\n";
-            const dmUrl = "https://x.com/messages/compose?screen_name=AppLab_K";
+            const dmUrl = "https://x.com/messages/compose?recipient_id=2032694737069838336";
             
             const showCopied = () => {
                 const originalHtml = btn.innerHTML;
@@ -385,9 +385,13 @@
                 window.open(dmUrl, "_blank", "noopener,noreferrer");
             };
             
-            navigator.clipboard.writeText(textToCopy).then(showCopied, () => {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(textToCopy).then(showCopied, () => {
+                    window.open(dmUrl, "_blank");
+                });
+            } else {
                 window.open(dmUrl, "_blank");
-            });
+            }
         }
 
         function handleDiffUnitChange() {
@@ -396,7 +400,6 @@
             compareText(true);
         }
         
-        // 初期化
         document.addEventListener('DOMContentLoaded', () => {
             originalEl.addEventListener("input", autoCompare);
             modifiedEl.addEventListener("input", autoCompare);
